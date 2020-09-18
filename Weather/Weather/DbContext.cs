@@ -9,7 +9,7 @@ namespace Weather
 {
     public class WeatherContext : DbContext
     {
-        public virtual DbSet<WeatherRequest> WeatherRequests { get; set; }
+        public virtual DbSet<WeatherMain> WeatherMain { get; set; } 
 
         public WeatherContext(DbContextOptions<WeatherContext> options)
             : base(options)

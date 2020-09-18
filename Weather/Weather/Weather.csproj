@@ -4,8 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Sourse\GitHub\Weather\Weather\Weather\Weather.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
 

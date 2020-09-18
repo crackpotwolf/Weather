@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Weather.Models
 {
-    public class WeatherViewModel
+    public class WeatherVM
     {
         public int Id { get; set; }
         public string Name { get; set; }

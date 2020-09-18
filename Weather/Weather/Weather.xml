@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Weather</name>
+    </assembly>
+    <members>
+        <member name="M:Weather.Services.Weathers.GetWeather(System.Object)">
+            <summary>
+            Получение данных о погоде,и запись в бд
+            </summary>
+            <param name="state"></param>
+        </member>
+    </members>
+</doc>

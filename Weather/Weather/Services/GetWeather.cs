@@ -13,7 +13,7 @@ using Weather.Models;
 
 namespace Weather.Services
 {
-    public class Weathers : IHostedService, IDisposable
+    public class GetWeather : IHostedService, IDisposable
     {
         private readonly string url = "http://api.openweathermap.org/data/2.5/weather?id=472757&lang=ru&units=metric&appid=ebc8fa7b52bf9e3a234f957bf2cd405e";
         private Timer _timer_weather;
@@ -21,7 +21,7 @@ namespace Weather.Services
         private readonly ILogger _logger;
         private readonly IServiceProvider _scopeFactory;
 
-        public Weathers(IServiceProvider scopeFactory, ILogger<Weathers> logger)
+        public GetWeather(IServiceProvider scopeFactory, ILogger<GetWeather> logger)
         {
             _logger = logger;
             _scopeFactory = scopeFactory;
@@ -34,7 +34,7 @@ namespace Weather.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            TimerCallback get_weather = new TimerCallback(GetWeather);
+            TimerCallback get_weather = new TimerCallback(GetWeathers);
 
             // Получение данных о погоде
             _timer_weather = new Timer(
@@ -50,7 +50,7 @@ namespace Weather.Services
         /// Получение данных о погоде,и запись в бд
         /// </summary>
         /// <param name="state"></param>
-        public void GetWeather(object state) 
+        public void GetWeathers(object state)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Weather.Services
                     if (db.WeatherRequests.Where(p => p.DateTime == dtDateTime).FirstOrDefault() == null)
                     {
 
-                        WeatherRequest weather = new WeatherRequest
+                        WeatherMain weather = new WeatherMain
                         {
                             Name = weather_response.name,
                             DateTime = dtDateTime,
@@ -110,7 +110,6 @@ namespace Weather.Services
 
                         _logger.LogInformation("Данные успешно сохранены");
                     }
-                    var a = db.WeatherRequests;
                 }
             }
             catch (Exception ex)

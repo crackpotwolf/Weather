@@ -28,7 +28,7 @@ namespace Weather
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHostedService<Weathers>();
+            services.AddHostedService<GetWeather>();
 
             // получаем строку подключения из файла конфигурации
             string connection = Configuration.GetConnectionString("DefaultConnection");
@@ -46,6 +46,7 @@ namespace Weather
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
                 c.IncludeXmlComments(xmlPath);
                 c.EnableAnnotations();
             });
