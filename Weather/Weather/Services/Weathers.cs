@@ -13,7 +13,7 @@ using Weather.Models;
 
 namespace Weather.Services
 {
-    public class Weather : IHostedService, IDisposable
+    public class Weathers : IHostedService, IDisposable
     {
         private readonly string url = "http://api.openweathermap.org/data/2.5/weather?id=472757&lang=ru&units=metric&appid=ebc8fa7b52bf9e3a234f957bf2cd405e";
         private Timer _timer_weather;
@@ -21,7 +21,7 @@ namespace Weather.Services
         private readonly ILogger _logger;
         private readonly IServiceProvider _scopeFactory;
 
-        public Weather(IServiceProvider scopeFactory, ILogger<Weather> logger)
+        public Weathers(IServiceProvider scopeFactory, ILogger<Weathers> logger)
         {
             _logger = logger;
             _scopeFactory = scopeFactory;
@@ -36,7 +36,7 @@ namespace Weather.Services
         {
             TimerCallback get_weather = new TimerCallback(GetWeather);
 
-            // Получение данных из Пирамиды
+            // Получение данных о погоде
             _timer_weather = new Timer(
                 callback: get_weather,
                 state: null,
@@ -110,6 +110,7 @@ namespace Weather.Services
 
                         _logger.LogInformation("Данные успешно сохранены");
                     }
+                    var a = db.WeatherRequests;
                 }
             }
             catch (Exception ex)

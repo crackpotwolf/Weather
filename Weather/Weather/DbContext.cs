@@ -11,12 +11,10 @@ namespace Weather
     {
         public virtual DbSet<WeatherRequest> WeatherRequests { get; set; }
 
-        public WeatherContext()
-        { }
-
-        public WeatherContext(DbContextOptions<WeatherContext> options) : base(options)
+        public WeatherContext(DbContextOptions<WeatherContext> options)
+            : base(options)
         {
-
+            Database.EnsureCreated();   // создаем базу данных при первом обращении
         }
     }
 }
