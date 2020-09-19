@@ -52,6 +52,9 @@ namespace Weather
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
+
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
