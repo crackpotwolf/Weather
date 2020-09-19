@@ -4,7 +4,19 @@
         <name>Weather</name>
     </assembly>
     <members>
-        <member name="M:Weather.Services.Weathers.GetWeather(System.Object)">
+        <member name="M:Weather.Controllers.WeatherAPI.GetWeather(System.DateTime,System.DateTime)">
+            <summary>
+            Предоставление погодных данных за промежуток времени
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Weather.Controllers.WeatherAPI.GetAllWeather">
+            <summary>
+            Предоставление всех погодных данных
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Weather.Services.GetWeather.GetWeathers(System.Object)">
             <summary>
             Получение данных о погоде,и запись в бд
             </summary>

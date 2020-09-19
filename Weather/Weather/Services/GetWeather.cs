@@ -73,7 +73,7 @@ namespace Weather.Services
                     Root weather_response = JsonConvert.DeserializeObject<Root>(weather_json);
                     dtDateTime = dtDateTime.AddSeconds(weather_response.dt);
 
-                    if (db.WeatherRequests.Where(p => p.DateTime == dtDateTime).FirstOrDefault() == null)
+                    if (db.WeatherMain.Where(p => p.DateTime == dtDateTime).FirstOrDefault() == null)
                     {
 
                         WeatherMain weather = new WeatherMain
@@ -105,7 +105,7 @@ namespace Weather.Services
                             weather.Snow3h = weather_response.snow.H3;
                         }
 
-                        db.WeatherRequests.Add(weather);
+                        db.WeatherMain.Add(weather);
                         db.SaveChanges();
 
                         _logger.LogInformation("Данные успешно сохранены");
