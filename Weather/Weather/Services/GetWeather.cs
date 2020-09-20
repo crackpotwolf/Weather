@@ -41,7 +41,7 @@ namespace Weather.Services
                 callback: get_weather,
                 state: null,
                 dueTime: TimeSpan.Zero,
-                period: TimeSpan.FromMinutes(5));
+                period: TimeSpan.FromHours(1));
 
             return Task.CompletedTask;
         }

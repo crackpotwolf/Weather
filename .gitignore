@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+Weather/Weather/appsettings.Production.json
+Weather/Weather/appsettings.Production.json
+Weather/Weather/appsettings.Production.json

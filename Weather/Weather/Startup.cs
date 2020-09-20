@@ -35,7 +35,9 @@ namespace Weather
 
             // добавляем контекст WeatherContext в качестве сервиса в приложение
             services.AddDbContext<WeatherContext>(options =>
-                options.UseSqlServer(connection));
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddControllersWithViews();
 
