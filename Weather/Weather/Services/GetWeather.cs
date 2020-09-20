@@ -71,7 +71,7 @@ namespace Weather.Services
                     }
 
                     Root weather_response = JsonConvert.DeserializeObject<Root>(weather_json);
-                    dtDateTime = dtDateTime.AddSeconds(weather_response.dt);
+                    dtDateTime = dtDateTime.AddSeconds(weather_response.dt).AddHours(4);
 
                     if (db.WeatherMain.Where(p => p.DateTime == dtDateTime).FirstOrDefault() == null)
                     {

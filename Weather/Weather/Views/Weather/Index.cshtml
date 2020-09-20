@@ -10,13 +10,13 @@
                     от
                 </span>
                 <input class="calendars" type="text" id="start_date" placeholder="Пожалуйста, выберите дату"
-                       value="@(DateTime.UtcNow.AddDays(-30).DateTimeToString("dd.MM.yyyy HH:mm:ss"))" onchange="WeatherUpdate()" data-input>
+                       value="@(DateTime.UtcNow.AddDays(-30).AddHours(4).DateTimeToString("dd.MM.yyyy HH:mm:ss"))" onchange="WeatherUpdate()" data-input>
 
                 <span class="font-weight dates">
                     до
                 </span>
                 <input class="calendars" type="text" id="end_date" placeholder="Пожалуйста, выберите дату"
-                       value="@DateTimeExtension.CurrentDateString("dd.MM.yyyy HH:mm:ss")" onchange="WeatherUpdate()" data-input>
+                       value="@(DateTime.UtcNow.AddHours(4).DateTimeToString("dd.MM.yyyy HH:mm:ss"))"onchange="WeatherUpdate()" data-input>
             </div>
         </div>
     </div>
