@@ -35,6 +35,7 @@ namespace Weather.Controllers
             {
                 weather_view.Add(new WeatherInfo()
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     Date = item.DateTime.DateTimeToString("dd.MM.yyyy"),
                     Time = item.DateTime.DateTimeToString("HH:mm:ss"),

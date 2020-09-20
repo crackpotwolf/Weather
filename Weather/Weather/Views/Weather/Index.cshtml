@@ -27,9 +27,11 @@
             <div class="card shadow mb-4">
                 <div class="card-header card-header py-3 d-flex flex-row align-items-center"><label>Погодные данные</label></div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+
+                    <table id="WeatherTable" class="table">
                         <thead>
                             <tr>
+                                <th scope="col">Id</th>
                                 <th scope="col">Наименование</th>
                                 <th scope="col">Дата</th>
                                 <th scope="col">Время</th>
@@ -45,21 +47,28 @@
                         <tbody id="WeatherDate">
                         </tbody>
                     </table>
+                
                 </div>
             </div>
-
         </div>
     </div>
 
 <script>
-    WeatherUpdate();
-
     $(document).ready(function () {
         flatpickr('.calendars', {
             enableTime: true,
             dateFormat: "d.m.Y H:i:S",
             "locale": "ru"
         });
+
+        WeatherUpdate();
+
+        let opt = {
+            "scrollY": "600px",
+            "scrollCollapse": true
+        };
+
+        initTable("WeatherTable", false, true, true, true, true, additionalOpt = opt);
     });
 
     function WeatherUpdate() {
@@ -69,6 +78,7 @@
         $.ajax({
             url: '@Url.Action("GetWeather", "Weather")',
             type: 'GET',
+            async: false,
             data: { start_date: start_date, end_date: end_date},
             success: function (result) {
                 Weather(result);
@@ -81,11 +91,10 @@
     function Weather(Weathers) {
         $("#WeatherDate").empty();
 
-        console.log(Weathers);
-
         Weathers.forEach(function (item, i, arr) {
             $('#WeatherDate').append('<tr>' +
-                '<th scope="row">' + item.name + '</th>' +
+                '<th scope="row">' + item.id + '</th>' +
+                '<td>' + item.name + '</td>' +
                 '<td>' + item.date + '</td>' +
                 '<td>' + item.time + '</td>' +
                 '<td>' + item.description + '</td>' +
