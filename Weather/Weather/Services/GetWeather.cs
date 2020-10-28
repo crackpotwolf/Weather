@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -40,8 +41,8 @@ namespace Weather.Services
             _timer_weather = new Timer(
                 callback: get_weather,
                 state: null,
-                dueTime: TimeSpan.Zero,
-                period: TimeSpan.FromHours(1));
+                dueTime: TimeSpan.FromSeconds(30),
+                period: TimeSpan.FromMinutes(30));
 
             return Task.CompletedTask;
         }
@@ -58,28 +59,29 @@ namespace Weather.Services
                 using (var db = scope.ServiceProvider.GetRequiredService<WeatherContext>())
                 {
                     _logger.LogInformation("Отправка запроса на полученние данных...");
-
-                    DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-
+                    
                     HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                     HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
 
                     string weather_json;
                     using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
-                    {
                         weather_json = streamReader.ReadToEnd();
-                    }
 
                     Root weather_response = JsonConvert.DeserializeObject<Root>(weather_json);
-                    dtDateTime = dtDateTime.AddSeconds(weather_response.dt).AddHours(4);
+                    DateTime datatime = DateTime.UtcNow.AddMinutes(-DateTime.UtcNow.Minute)
+                        .AddSeconds(-DateTime.UtcNow.Second)
+                        .AddHours(4);
 
-                    if (db.WeatherMain.Where(p => p.DateTime == dtDateTime).FirstOrDefault() == null)
+                    if(DateTime.UtcNow.Minute >= 30)
+                        datatime = datatime.AddMinutes(30);
+
+                    if (db.WeatherMain.Where(p => p.DateTime.Hour == datatime.Hour && 
+                        p.DateTime.Minute == datatime.Minute).FirstOrDefault() == null)
                     {
-
                         WeatherMain weather = new WeatherMain
                         {
                             Name = weather_response.name,
-                            DateTime = dtDateTime,
+                            DateTime = datatime,
                             Main = weather_response.weather.FirstOrDefault().main,
                             Description = weather_response.weather.FirstOrDefault().description,
                             Temp = weather_response.main.temp,
@@ -115,7 +117,7 @@ namespace Weather.Services
             catch (Exception ex)
             {
                 _logger.LogInformation($"Ошибка получение данных: {ex.Message}");
-                Console.WriteLine($"AN ERROR: {ex.Message}");
+                Console.WriteLine($"Ошибка получение данных: {ex.Message}");
             }
         }
 
