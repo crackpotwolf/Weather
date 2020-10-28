@@ -16,6 +16,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Weather.Controllers.WeatherAPI.SaveWeather(System.String)">
+            <summary>
+            Сохранение погодных данных
+            </summary>
+            <returns></returns>
+            <response code="400">При выполнении произошла ошибка</response> 
+        </member>
         <member name="T:Weather.Extensions.DateTimeExtension">
             <summary>
             Если у функции, дата принимается в виде long, то она должна прийти в секундах, также необходимо передать offset (в секундах), 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Weather.Extensions;
@@ -30,28 +31,39 @@ namespace Weather.Controllers
 
         public List<WeatherInfo> GetWeather(string start_date, string end_date)
         {
-            var start = DateTime.Parse(start_date);
-            var end = DateTime.Parse(end_date);
-
-            var weather = _db.WeatherMain.Where(p => p.DateTime >= start && p.DateTime <= end).ToList();
             var weather_view = new List<WeatherInfo>();
 
-            foreach (var item in weather)
+            try
             {
-                weather_view.Add(new WeatherInfo()
+                DateTime start = DateTime.ParseExact(start_date,
+                  "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                DateTime end = DateTime.ParseExact(end_date,
+                      "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                var weather = _db.WeatherMain.Where(p => p.DateTime >= start && p.DateTime <= end).ToList();
+               
+                foreach (var item in weather)
                 {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Date = item.DateTime.DateTimeToString("dd.MM.yyyy"),
-                    Time = item.DateTime.DateTimeToString("HH:mm:ss"),
-                    Description = item.Description,
-                    Temp = item.Temp,
-                    FeelsLike = item.FeelsLike,
-                    Pressure = item.Pressure,
-                    Humidity = item.Humidity,
-                    WindSpeed = item.WindSpeed,
-                    Clouds = item.Clouds,
-                });
+                    weather_view.Add(new WeatherInfo()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Date = item.DateTime.DateTimeToString("dd.MM.yyyy"),
+                        Time = item.DateTime.DateTimeToString("HH:mm:ss"),
+                        Description = item.Description,
+                        Temp = item.Temp,
+                        FeelsLike = item.FeelsLike,
+                        Pressure = item.Pressure,
+                        Humidity = item.Humidity,
+                        WindSpeed = item.WindSpeed,
+                        Clouds = item.Clouds,
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка получение погодных данных: {ex.Message}");
             }
 
             return weather_view;
