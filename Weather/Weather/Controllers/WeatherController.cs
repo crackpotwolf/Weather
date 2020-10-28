@@ -23,6 +23,11 @@ namespace Weather.Controllers
             return View();
         }
 
+        public virtual IActionResult WeatherView()
+        {
+            return PartialView("_WeatherPartial"); 
+        }
+
         public List<WeatherInfo> GetWeather(string start_date, string end_date)
         {
             var start = DateTime.Parse(start_date);

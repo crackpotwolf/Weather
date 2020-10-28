@@ -1,110 +1,44 @@
 ﻿@using Weather.Extensions
 
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <div style="text-align:center">
-                <span class="font-weight dates">
-                    Выбор диапазона дат:
-                </span>
-                <span class="font-weight dates">
-                    от
-                </span>
-                <input class="calendars" type="text" id="start_date" placeholder="Пожалуйста, выберите дату"
-                       value="@(DateTime.UtcNow.AddDays(-30).AddHours(4).DateTimeToString("dd.MM.yyyy HH:mm:ss"))" onchange="WeatherUpdate()" data-input>
-
-                <span class="font-weight dates">
-                    до
-                </span>
-                <input class="calendars" type="text" id="end_date" placeholder="Пожалуйста, выберите дату"
-                       value="@(DateTime.UtcNow.AddHours(4).DateTimeToString("dd.MM.yyyy HH:mm:ss"))"onchange="WeatherUpdate()" data-input>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-
-            <div class="card shadow mb-4">
-                <div class="card-header card-header py-3 d-flex flex-row align-items-center"><label>Погодные данные</label></div>
-                <div class="card-body">
-
-                    <table id="WeatherTable" class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Наименование</th>
-                                <th scope="col">Дата</th>
-                                <th scope="col">Время</th>
-                                <th scope="col">Описание</th>
-                                <th scope="col">Температура</th>
-                                <th scope="col">Ощущается как</th>
-                                <th scope="col">Атмосферное давление</th>
-                                <th scope="col">Влажность</th>
-                                <th scope="col">Скорость ветра</th>
-                                <th scope="col">Облачность</th>
-                            </tr>
-                        </thead>
-                        <tbody id="WeatherDate">
-                        </tbody>
-                    </table>
-                
-                </div>
-            </div>
-        </div>
-    </div>
-
 <script>
-    $(document).ready(function () {
-        flatpickr('.calendars', {
-            enableTime: true,
-            dateFormat: "d.m.Y H:i:S",
-            "locale": "ru"
-        });
-
-        WeatherUpdate();
-
-        let opt = {
-            "scrollY": "600px",
-            "scrollCollapse": true
-        };
-
-        initTable("WeatherTable", false, true, true, true, true, additionalOpt = opt);
-    });
-
-    function WeatherUpdate() {
-        var start_date = document.getElementById("start_date").value;
-        var end_date = document.getElementById("end_date").value;
+    function LoadList() {
+        $("#listPartial").html();
 
         $.ajax({
-            url: '@Url.Action("GetWeather", "Weather")',
+            url: '@Url.Action("WeatherView", "Weather")',
             type: 'GET',
-            async: false,
-            data: { start_date: start_date, end_date: end_date},
-            success: function (result) {
-                Weather(result);
+            data: { },
+            success: function(result) {
+                $("#listPartial").html(result);
             },
             complete: function () {
             }
         });
     }
-
-    function Weather(Weathers) {
-        $("#WeatherDate").empty();
-
-        Weathers.forEach(function (item, i, arr) {
-            $('#WeatherDate').append('<tr>' +
-                '<th scope="row">' + item.id + '</th>' +
-                '<td>' + item.name + '</td>' +
-                '<td>' + item.date + '</td>' +
-                '<td>' + item.time + '</td>' +
-                '<td>' + item.description + '</td>' +
-                '<td>' + item.temp + '</td>' +
-                '<td>' + item.feelsLike + '</td>' +
-                '<td>' + item.pressure + '</td>' +
-                '<td>' + item.humidity + '</td>' +
-                '<td>' + item.windSpeed + '</td>' +
-                '<td>' + item.clouds + '</td>' +
-                '</tr>');
-        });
-    }
+    $(document).ready(function() {
+        LoadList();
+    });
 </script>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div style="text-align:center">
+            <span class="font-weight dates">
+                Выбор диапазона дат:
+            </span>
+            <span class="font-weight dates">
+                от
+            </span>
+            <input class="calendars" type="text" id="start_date" placeholder="Пожалуйста, выберите дату"
+                   value="@(DateTime.UtcNow.AddDays(-30).AddHours(4).DateTimeToString("dd.MM.yyyy HH:mm:ss"))" onchange="WeatherUpdate()" data-input>
+
+            <span class="font-weight dates">
+                до
+            </span>
+            <input class="calendars" type="text" id="end_date" placeholder="Пожалуйста, выберите дату"
+                   value="@(DateTime.UtcNow.AddHours(4).DateTimeToString("dd.MM.yyyy HH:mm:ss"))" onchange="WeatherUpdate()" data-input>
+        </div>
+    </div>
+</div>
+
+<div id="listPartial" class="listPartial"></div>
