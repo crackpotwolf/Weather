@@ -41,8 +41,8 @@ namespace Weather.Services
             _timer_weather = new Timer(
                 callback: get_weather,
                 state: null,
-                dueTime: TimeSpan.FromSeconds(1),
-                period: TimeSpan.FromMinutes(1));
+                dueTime: TimeSpan.FromSeconds(30),
+                period: TimeSpan.FromMinutes(30));
 
             return Task.CompletedTask;
         }
