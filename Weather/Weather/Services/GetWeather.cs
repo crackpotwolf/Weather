@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Weather.Extensions;
 using Weather.Models;
 
 namespace Weather.Services
@@ -41,8 +42,8 @@ namespace Weather.Services
             _timer_weather = new Timer(
                 callback: get_weather,
                 state: null,
-                dueTime: TimeSpan.FromSeconds(30),
-                period: TimeSpan.FromMinutes(30));
+                dueTime: TimeSpan.FromSeconds(15),
+                period: TimeSpan.FromMinutes(1));
 
             return Task.CompletedTask;
         }
@@ -68,15 +69,10 @@ namespace Weather.Services
                         weather_json = streamReader.ReadToEnd();
 
                     Root weather_response = JsonConvert.DeserializeObject<Root>(weather_json);
-                    DateTime datatime = DateTime.UtcNow.AddMinutes(-DateTime.UtcNow.Minute)
-                        .AddSeconds(-DateTime.UtcNow.Second)
-                        .AddHours(4);
+                    DateTime datatime = DateTimeExtension.LongToDateTime(weather_response.dt)
+                        .AddHours(4); 
 
-                    if(DateTime.UtcNow.Minute >= 30)
-                        datatime = datatime.AddMinutes(30);
-
-                    if (db.WeatherMain.Where(p => p.DateTime.Hour == datatime.Hour && 
-                        p.DateTime.Minute == datatime.Minute).FirstOrDefault() == null)
+                    if (db.WeatherMain.Where(p => p.DateTime == datatime).FirstOrDefault() == null)
                     {
                         WeatherMain weather = new WeatherMain
                         {
